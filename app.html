@@ -241,6 +241,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal" id="editTaskItem" style="margin: 15% 20%; width: 60%; height: 100%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit this Task</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modalBody">
+                                <input type="hidden" name="ModalEdit" value="true">
+                                <div class="form-group">
+                                    <label class="font-weight-bold" for="description">Title:</label>
+                                    <input type="text" class="form-control cool-border" name="Title" id="editTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold" for="description">Due Date:</label>
+                                    <input type="date" class="form-control cool-border" name="DueDate" id="editDueDate">
+                                </div>
+                                <button type="submit" class="btn btn-block btn-dark btn-outline-warning btn-wide"
+                                    onclick="EditTask(modalBody)" data-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </section>
     </main>
 
@@ -251,12 +274,12 @@
             <td id="created"></td>
             <td id="dueDate"></td>
             <td id="tdCrud" data-id="" style="float: right;">
-                <a onclick="CompleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-check"
-                        aria-hidden="true"></i> Complete</a>
-                <a onclick="PopEditModal(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-magic"
-                        aria-hidden="true"></i> Edit</a>
-                <a onclick="DeleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-trash"
-                        aria-hidden="true"></i> Delete</a>
+                <button onclick="CompleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-check"
+                        aria-hidden="true"></i> Complete</button>
+                <button onclick="PopEditModal(this)" class="btn btn-sm btn-outline-dark" data-toggle="modal"
+                    data-target="#editTaskItem"><i class="fa fa-magic" aria-hidden="true"></i> Edit</button>
+                <button onclick="DeleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-trash"
+                        aria-hidden="true"></i> Delete</button>
             </td>
         </tr>
     </template>
@@ -279,6 +302,15 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="/js/site.js"></script>
+
+    <script>
+        $("#edit").click(function () {
+            var title = $("#title").val();
+            var dueDate = $("#dueDate").val();
+            $("#editTitle").val(title);
+            $("#editDueDate").val(dueDate);
+        })
+    </script>
 </body>
 
 </html>

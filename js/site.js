@@ -24,8 +24,37 @@ function CreateTask(formData) {
     ListTasks();
 }
 
-function EditTask(formData) {
+function EditTask(element) {
+    let tasks = GetLocalStorage();
 
+    let task = {
+        id: GenerateId(),
+        created: new Date(),
+        completed: false,
+        title: formData[1].value,
+        dueDate: new Date(`${formData[2].value} 00:00`),
+        tdCrud: "x",
+    }
+    tasks.push(task);
+    SetLocalStorage(tasks);
+    ListTasks();
+}
+
+function PopEditModal(element) {
+    ClearToolTip();
+
+    let tasks = GetLocalStorage();
+    let taskId = GetTaskId(element);
+    let task = GetIndex(taskId);
+
+    let dateString = new Date(tasks[task].dueDate);
+
+    document.getElementById("editTitle").value = tasks[task].title;
+    document.getElementById("editDueDate").value = FormatDate(dateString);
+    $("#editTaskModal").modal();
+
+    tasks.splice(taskId, 1);
+    SetLocalStorage(tasks);
 }
 
 function SaveTask(task) {
@@ -70,8 +99,9 @@ function CompleteTask(element) {
 
     let tasks = GetLocalStorage();
     let taskId = GetTaskId(element);
-    let task = task.find(t => t.id == taskId);
-    task.completed = true;
+    let task = GetIndex(taskId);
+    // task.find(t => t.id == taskId);
+    tasks[task].completed = !tasks[task].completed;
     SetLocalStorage(tasks);
     ListTasks();
 }
@@ -82,7 +112,17 @@ function RenderDate(taskDate) {
 }
 
 function GetIndex(element) {
+    let tasks = GetLocalStorage();
+    const template = document.getElementById("taskItem-template");
+    let index = 0;
 
+    for (let row = 0; row < tasks.length; row++) {
+        const taskRow = document.importNode(template.content, true);
+        if (taskRow.getElementById("id").textContent == element) {
+            index = row;
+        }
+    }
+    return index;
 }
 
 function GetTaskCount() {
@@ -90,8 +130,11 @@ function GetTaskCount() {
     return tasks.length;
 }
 
-function GetTaskId() {
-
+function GetTaskId(element) {
+    let col = element.parentNode;
+    let row = col.parentNode;
+    let rowId = row.children[0];
+    return rowId;
 }
 
 function GetLocalStorage() {
