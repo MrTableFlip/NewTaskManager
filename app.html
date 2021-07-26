@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Challenge Template</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<body onload="PrepareLocaleStorage(), ListTasks()">
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="">
+            <a class="navbar-brand" href="#">Task Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="app.html">The App</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="code.html">See the Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.linkedin.com/in/dillon-benshoff-5945a813b/"
+                            target="_blank">About the</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-lg-12">
+                            <div class="appContainer">
+                                <h1 style="text-align: center;">Task Manager</h1>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content" style="margin: 2rem 2rem; min-height: 20px;">
+
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="curTasks-Title" style="text-align: center;">Current Tasks</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row mt-4">
+                            <div class="col ml-4 pr-3">
+                                <button type="button" data-toggle="modal" data-target="#newTaskItem"
+                                    class="btn btn-block btn-default btn-outline-dark">
+                                    Create Task
+                                </button>
+                            </div>
+                            <div class="col mr-4 pl-3">
+                                <button type="button" onclick="ClearTasks()"
+                                    class="btn btn-block btn-default btn-outline-danger">
+                                    Clear Tasks
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col ml-4 mr-4">
+                                <table class="table table-striped projects" id="eventData">
+                                    <thead>
+                                        <tr>
+                                            <th id="title" style="width: 30%">
+                                                Title
+                                            </th>
+                                            <th id="created" style="width: 20%">
+                                                Created
+                                            </th>
+                                            <th id="dueDate" style="width: 20%">
+                                                Due Date
+                                            </th>
+                                            <th id="tdCrud" data-id="" style="width: 29%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="taskBody">
+                                        <!--Data goes here-->
+                                    </tbody>
+                                    <!-- <tbody>
+                            <tr>
+                                <td>
+                                    #
+                                </td>
+                                <td>
+                                    <a>
+                                        AdminLTE v3
+                                    </a>
+                                    <br />
+                                    <small>
+                                        Created 01.01.2019
+                                    </small>
+                                </td>
+                                <td>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="project_progress">
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 57%">
+                                        </div>
+                                    </div>
+                                    <small>
+                                        57% Complete
+                                    </small>
+                                </td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-primary btn-sm" href="#">
+                                        <i class="fas fa-folder">
+                                        </i>
+                                        View
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="#">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody> -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </section>
+            <!-- /.content -->
+
+            <!-- Begin page content -->
+            <!-- <main class="main"> -->
+            <!-- <div class="row" id="r1">
+                <div class="col-lg-12" id="r1c1">
+                    <div class="appContainer">
+                        <h1 id="curTasks-Title" style="text-align: center;">Current Tasks</h1>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="taskContainer">
+                <div class="row" id="r2">
+                    <div class="col" id="r2c1">
+                        <div class="table-responsive">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <button type="button" data-toggle="modal" data-target="#newTaskItem"
+                                        class="btn btn-default btn-outline-dark" style="width: 50%;">
+                                        Create Task
+                                    </button>
+                                    <button type="button" onclick="ClearTasks()"
+                                        class="btn btn-default btn-outline-danger" style="width: 50%;">
+                                        Clear Tasks
+                                    </button>
+                                </div>
+                                <table class="table table-striped" id="eventData">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="d-none"></th>
+                                            <th>Title</th>
+                                            <th>Created</th>
+                                            <th>Due Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="taskBody">
+                                        Data goes here
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- Modal Section -->
+            <section>
+                <div class="modal" id="newTaskItem" style="margin: 15% 20%; width: 60%; height: 100%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add A Task</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modalBody">
+                                <input type="hidden" name="ModalCreate" value="true">
+                                <div class="form-group">
+                                    <label class="font-weight-bold" for="description">Title:</label>
+                                    <input type="text" class="form-control cool-border" name="Title" id="Title">
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold" for="description">Due Date:</label>
+                                    <input type="date" class="form-control cool-border" name="DueDate" id="DueDate">
+                                </div>
+                                <button type="submit" class="btn btn-block btn-dark btn-outline-warning btn-wide"
+                                    onclick="CreateTask(modalBody)" data-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </main>
+
+    <template id="taskItem-template">
+        <tr id="TaskRow">
+            <td class="d-none" id="id"></td>
+            <td id="title"></td>
+            <td id="created"></td>
+            <td id="dueDate"></td>
+            <td id="tdCrud" data-id="" style="float: right;">
+                <a onclick="CompleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-check"
+                        aria-hidden="true"></i> Complete</a>
+                <a onclick="PopEditModal(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-magic"
+                        aria-hidden="true"></i> Edit</a>
+                <a onclick="DeleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-trash"
+                        aria-hidden="true"></i> Delete</a>
+            </td>
+        </tr>
+    </template>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Created by Dillon Benshoff</span>
+        </div>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script src="/js/site.js"></script>
+</body>
+
+</html>
