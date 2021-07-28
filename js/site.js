@@ -1,42 +1,64 @@
-function PrepareLocaleStorage() {
+$(function () {
+    PrepareLocalStorage();
+
+    let tasks = GetLocalStorage();
+    //Set task count
+    SetTaskCount(`Current Tasks (${tasks.length})`);
+
+    //This is my first change where I am trying to pass the entire array into ListTasks...
+    //Not even sure if it works yet...However if it does I am in business!
+    ListTasks(tasks);
+
+    //Trigger tooltips on hover
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+    })
+
+    $("#btnSearch").on("click", function () {
+        let searchString = $("#txtSearch").val();
+        SearchTasks(searchString);
+    })
+});
+
+function PrepareLocalStorage() {
     if (GetLocalStorage() == null)
         SetLocalStorage(new Array());
 
     // document.querySelectorAll('[data-toggle="tooltip"]').tooltip({
     //     trigger: 'hover'
     // })
-
-    document.getElementById("curTasks-Title").textContent = "Current Tasks (" + `${GetTaskCount()}` + ")";
 }
 
 function CreateTask(formData) {
-    let tasks = GetLocalStorage();
+    let dueDate = formData[2].value == "" ?
+        new Date() :
+        new Date(`${formData[2].value} 00:00`);
 
     let task = {
         id: GenerateId(),
         created: new Date(),
         completed: false,
         title: formData[1].value,
-        dueDate: new Date(`${formData[2].value} 00:00`)
-    };
+        dueDate: dueDate
+    }
+
+    let tasks = GetLocalStorage();
     tasks.push(task);
+
     SetLocalStorage(tasks);
-    ListTasks();
+    ListTasks(tasks);
 }
 
-function EditTask(element) {
-    let tasks = GetLocalStorage();
+function EditTask(formData) {
+    let taskId = formData[1].value;
 
-    let task = {
-        id: GenerateId(),
-        created: new Date(),
-        completed: false,
-        title: formData[1].value,
-        dueDate: new Date(`${formData[2].value} 00:00`),
-        tdCrud: "x",
-    }
-    tasks.push(task);
+    let tasks = GetLocalStorage();
+    let task = tasks.find(t => t.id == taskId);
+    task.title = formData[2].value;
+    task.dueDate = new Date(`${formData[3].value} 00:00`);
+
     SetLocalStorage(tasks);
+
     ListTasks();
 }
 
@@ -45,16 +67,19 @@ function PopEditModal(element) {
 
     let tasks = GetLocalStorage();
     let taskId = GetTaskId(element);
-    let task = GetIndex(taskId);
+    let task = tasks.find(t => t.id == taskId);
 
-    let dateString = new Date(tasks[task].dueDate);
+    $("#TaskId").val(task.id);
+    //document.getElementById("TaskId").value = task.id
 
-    document.getElementById("editTitle").value = tasks[task].title;
-    document.getElementById("editDueDate").value = FormatDate(dateString);
-    $("#editTaskModal").modal();
+    $("#editTitle").val(task.title);
 
-    tasks.splice(taskId, 1);
-    SetLocalStorage(tasks);
+    //Sweet works!
+    let modalDueDate = BuildModalDueDate(task.dueDate);
+    $("#editDueDate").val(modalDueDate);
+    $("#editTaskItem").modal("show");
+
+    alert("Let's see");
 }
 
 function SaveTask(task) {
@@ -77,14 +102,14 @@ function ListTasks() {
         taskRow.getElementById("title").textContent = tasks[row].title;
         taskRow.getElementById("created").textContent = RenderDate(tasks[row].created);
         taskRow.getElementById("dueDate").textContent = RenderDate(tasks[row].dueDate);
-        taskRow.getElementById("tdCrud").setAttribute("data-id", tasks[row].id);
+        //taskRow.getElementById("tdCrud").setAttribute("data-id", tasks[row].id);
 
         taskBody.appendChild(taskRow);
     }
-    GetTaskCount();
+    SetTaskCount(`Current Tasks (${tasks.length})`);
 }
 
-function DeleteTasks(element) {
+function DeleteTask(element) {
     ClearToolTip();
 
     let index = GetIndex(element);
@@ -125,15 +150,10 @@ function GetIndex(element) {
     return index;
 }
 
-function GetTaskCount() {
-    let tasks = GetLocalStorage();
-    return tasks.length;
-}
-
 function GetTaskId(element) {
     let col = element.parentNode;
     let row = col.parentNode;
-    let rowId = row.children[0];
+    let rowId = row.children[0].innerHTML;
     return rowId;
 }
 
@@ -151,7 +171,7 @@ function ClearToolTip() {
 
 function ClearTasks() {
     localStorage.clear();
-    PrepareLocaleStorage();
+    PrepareLocalStorage();
 }
 
 function GenerateId() {
@@ -160,4 +180,13 @@ function GenerateId() {
             v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
+}
+
+function SetTaskCount(count) {
+    $("#curTasks-Title").text(count);
+}
+
+function BuildModalDueDate(dueDate) {
+    let shortDate = dueDate.split("T")[0];
+    return shortDate;
 }

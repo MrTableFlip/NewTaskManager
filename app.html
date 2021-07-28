@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/site.css">
 </head>
 
-<body onload="PrepareLocaleStorage(), ListTasks()">
+<body onload="PrepareLocalStorage()">
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="">
@@ -88,16 +88,17 @@
                                 <table class="table table-striped projects" id="eventData">
                                     <thead>
                                         <tr>
-                                            <th id="title" style="width: 30%">
+                                            <th class="d-none"></th>
+                                            <th style="width: 30%">
                                                 Title
                                             </th>
-                                            <th id="created" style="width: 20%">
+                                            <th style="width: 20%">
                                                 Created
                                             </th>
-                                            <th id="dueDate" style="width: 20%">
+                                            <th style="width: 20%">
                                                 Due Date
                                             </th>
-                                            <th id="tdCrud" data-id="" style="width: 29%"></th>
+                                            <th style="width: 29%"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="taskBody">
@@ -225,18 +226,18 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <form id="modalBody">
+                            <form onsubmit="CreateTask(this)">
                                 <input type="hidden" name="ModalCreate" value="true">
                                 <div class="form-group">
                                     <label class="font-weight-bold" for="description">Title:</label>
-                                    <input type="text" class="form-control cool-border" name="Title" id="Title">
+                                    <input type="text" class="form-control cool-border" name="title" id="title">
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold" for="description">Due Date:</label>
-                                    <input type="date" class="form-control cool-border" name="DueDate" id="DueDate">
+                                    <input type="date" class="form-control cool-border" name="dueDate" id="dueDate">
                                 </div>
-                                <button type="submit" class="btn btn-block btn-dark btn-outline-warning btn-wide"
-                                    onclick="CreateTask(modalBody)" data-dismiss="modal">Submit</button>
+                                <button type="submit"
+                                    class="btn btn-block btn-dark btn-outline-warning btn-wide">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -248,18 +249,20 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <form id="modalBody">
-                                <input type="hidden" name="ModalEdit" value="true">
+                            <form onsubmit="EditTask(this)">
+                                <input type="hidden" name="ModalCreate" value="true">
+                                <input type="hidden" id="TaskId">
                                 <div class="form-group">
                                     <label class="font-weight-bold" for="description">Title:</label>
                                     <input type="text" class="form-control cool-border" name="Title" id="editTitle">
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold" for="description">Due Date:</label>
-                                    <input type="date" class="form-control cool-border" name="DueDate" id="editDueDate">
+                                    <input type="date" class="form-control cool-border" name="editDueDate"
+                                        id="editDueDate">
                                 </div>
-                                <button type="submit" class="btn btn-block btn-dark btn-outline-warning btn-wide"
-                                    onclick="EditTask(modalBody)" data-dismiss="modal">Submit</button>
+                                <button type="submit"
+                                    class="btn btn-block btn-dark btn-outline-warning btn-wide">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -273,11 +276,12 @@
             <td id="title"></td>
             <td id="created"></td>
             <td id="dueDate"></td>
-            <td id="tdCrud" data-id="" style="float: right;">
+            <!-- <td id="tdCrud" data-id=""></td> -->
+            <td id="tdCrud" style="float: right;">
                 <button onclick="CompleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-check"
                         aria-hidden="true"></i> Complete</button>
-                <button onclick="PopEditModal(this)" class="btn btn-sm btn-outline-dark" data-toggle="modal"
-                    data-target="#editTaskItem"><i class="fa fa-magic" aria-hidden="true"></i> Edit</button>
+                <button onclick="PopEditModal(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-magic"
+                        aria-hidden="true"></i> Edit</button>
                 <button onclick="DeleteTask(this)" class="btn btn-sm btn-outline-dark"><i class="fa fa-trash"
                         aria-hidden="true"></i> Delete</button>
             </td>
@@ -302,14 +306,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="/js/site.js"></script>
-
-    <script>
-        $("#edit").click(function () {
-            var title = $("#title").val();
-            var dueDate = $("#dueDate").val();
-            $("#editTitle").val(title);
-            $("#editDueDate").val(dueDate);
-        })
     </script>
 </body>
 
